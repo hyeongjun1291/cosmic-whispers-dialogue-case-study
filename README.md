@@ -20,9 +20,4 @@ setAffectionScores(updatedScores);
 localStorage.setItem('cosmic_affection', JSON.stringify(updatedScores));
 ```
 
-## 기준 커밋에서 확인한 한계
-
-- **응답 검증.** 파서는 변화량이 숫자인지 확인했지만, 프롬프트에서 요구한 정수 범위 `-5~+5`나 감정 허용값은 검사하지 않았습니다. 위 코드의 `|| 30`은 저장된 `0`도 기본값으로 처리했습니다. [프롬프트 형식](https://github.com/hyeongjun1291/cosmic-whispers/blob/c99dd871da1065f1b0f68d9befc517ccafe25fec/src/lib/groq.ts#L112-L120) · [파서 구현](https://github.com/hyeongjun1291/cosmic-whispers/blob/c99dd871da1065f1b0f68d9befc517ccafe25fec/src/lib/groq.ts#L178-L182)
-- **요청 제한.** 서버는 IP별 요청 수를 프로세스 메모리에 기록했습니다. 실제 기본 한도는 하루 1,000회였지만, 화면에는 20회로 표시됐습니다. [채팅 API](https://github.com/hyeongjun1291/cosmic-whispers/blob/c99dd871da1065f1b0f68d9befc517ccafe25fec/src/app/api/chat/route.ts#L6-L19) · [요청 제한 구현](https://github.com/hyeongjun1291/cosmic-whispers/blob/c99dd871da1065f1b0f68d9befc517ccafe25fec/src/lib/rate-limit.ts#L8-L47)
-
-이후 원본 저장소에 응답 필드 검증과 호감도 `0` 보존을 반영했고, 운영 요청 한도를 Redis 기반 하루 20회로 맞췄습니다. [후속 수정 `e60a103`](https://github.com/hyeongjun1291/cosmic-whispers/commit/e60a10347eb4b4dae563cb795ada9639b92f751f)
+후속 수정에서 모델 응답의 감정과 호감도 변화량을 검증하도록 보완했습니다. [후속 수정 `e60a103`](https://github.com/hyeongjun1291/cosmic-whispers/commit/e60a10347eb4b4dae563cb795ada9639b92f751f)
